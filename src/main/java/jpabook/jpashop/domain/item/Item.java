@@ -1,9 +1,12 @@
 package jpabook.jpashop.domain.item;
 
+import jpabook.jpashop.domain.Category;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 한 테이블에 다 때려박는...
@@ -22,4 +25,6 @@ public class Item {
 
     private int stockQuantity;
 
+    @ManyToMany(mappedBy = "items") //mappedBy할 때는 변수명
+    private List<Category> catgories = new ArrayList<>();
 }
