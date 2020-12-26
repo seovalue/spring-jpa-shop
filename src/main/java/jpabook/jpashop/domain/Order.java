@@ -79,8 +79,6 @@ public class Order {
     //==조회 로직==//
     /**
      * 전체 주문 가격 조회
-     *
-     * @return totalPrice
      */
     public int getTotalPrice() {
         return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
