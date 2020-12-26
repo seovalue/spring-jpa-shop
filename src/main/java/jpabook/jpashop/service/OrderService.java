@@ -47,6 +47,10 @@ public class OrderService {
         return order.getId();
     }
 
+    public Order findOne(Long id){
+        return orderRepository.findOne(id);
+    }
+
     /**
      * 취소
      */
