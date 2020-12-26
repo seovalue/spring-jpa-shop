@@ -57,16 +57,13 @@ public class Order {
         Order order = new Order();
         order.setMember(member);
         order.setDelivery(delivery);
-        for (OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
-        }
+        Arrays.stream(orderItems).forEachOrdered(order::addOrderItem);
         order.setStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
 
     //==비즈니스 로직==//
-
     /**
      * 주문 취소
      */
@@ -76,8 +73,16 @@ public class Order {
         }
 
         this.setStatus(OrderStatus.CANCEL);
-        for (OrderItem orderItem : orderItems) {
-            orderItem.cancel();
-        }
+        orderItems.forEach(OrderItem::cancel);
+    }
+
+    //==조회 로직==//
+    /**
+     * 전체 주문 가격 조회
+     *
+     * @return totalPrice
+     */
+    public int getTotalPrice() {
+        return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
     }
 }

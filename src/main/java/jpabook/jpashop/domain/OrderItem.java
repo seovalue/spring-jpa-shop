@@ -7,7 +7,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class OrderItem {
     @Id
     @GeneratedValue
@@ -28,5 +29,9 @@ public class OrderItem {
     //==비즈니스 로직==//
     public void cancel() {
         getItem().addStock(count);
+    }
+
+    public int getTotalPrice() {
+        return getOrderPrice() * getCount();
     }
 }
