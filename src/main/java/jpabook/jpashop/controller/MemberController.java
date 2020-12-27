@@ -43,6 +43,10 @@ public class MemberController {
 
     @GetMapping(value = "/members")
     public String list(Model model) {
+        /**
+         * 이 방법도, 만약 실무에서 사용한다면 화면에 뿌리기 위한 엔티티를 구성하여 전달하는 것이 낫다!
+         * API를 만들 때는 멤버 엔티티를 반환하는 것은 절대 금물
+         */
         List<Member> members = memberService.findMembers();
         model.addAttribute("members", members); //attributeName은 html에서 전달받을 ${} 이름과 같다.
         return "members/memberList";
