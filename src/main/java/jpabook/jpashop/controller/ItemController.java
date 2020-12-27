@@ -34,29 +34,22 @@ public class ItemController {
             return "items/createItemForm";
         }
 
-        Book book = new Book();
-        /**
-         * setter를 삭제하고 createBook해서 변수로 전달하는 방법으로 리팩토링하기
-         */
-        book.setName(bookForm.getName());
-        book.setPrice(bookForm.getPrice());
-        book.setIsbn(bookForm.getIsbn());
-        book.setAuthor(bookForm.getAuthor());
-        book.setStockQuantity(bookForm.getStockQuantity());
+        Book book = Book.createBook(bookForm.getName(), bookForm.getPrice(), bookForm.getStockQuantity()
+                , bookForm.getAuthor(), bookForm.getIsbn());
 
         itemService.saveItem(book);
         return "redirect:/";
     }
 
     @GetMapping("/items")
-    public String list(Model model){
+    public String list(Model model) {
         List<Item> items = itemService.findItems();
         model.addAttribute("items", items);
         return "items/itemList";
     }
 
     @GetMapping("items/{itemId}/edit")
-    public String updateItemForm(@PathVariable("itemId") Long itemId, Model model){
+    public String updateItemForm(@PathVariable("itemId") Long itemId, Model model) {
         Book item = (Book) itemService.findOne(itemId); //예제를 단순하게 하기 위해 캐스팅
 
         BookForm form = new BookForm();
@@ -71,8 +64,12 @@ public class ItemController {
         return "items/updateItemForm";
     }
 
-//    @PostMapping("items/{itemId}/edit")
-//    public String updateItem(@ModelAttribute("form") BookForm form){
-//
-//    }
+    @PostMapping("items/{itemId}/edit")
+    public String updateItem(@ModelAttribute("form") BookForm form) {
+        Book book = Book.createBookWithId(form.getId(), form.getName(), form.getPrice(),
+                form.getStockQuantity(), form.getAuthor(), form.getIsbn());
+
+        itemService.saveItem(book);
+        return "redirect:/items";
+    }
 }
